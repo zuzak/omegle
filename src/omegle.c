@@ -24,6 +24,8 @@ char *get_event(char *);
 void say_something(char *, char *);
 void remchar(char *, char);
 void reconnect();
+int check_event(char *, int);
+
 struct sockaddr_in *create_remote();
 
 struct omegle {
@@ -57,33 +59,30 @@ int main() {
 	/* fprintf(stdout,"[+] Event %s\n", user.event); */
 
 	/* Are we waiting */
-	if(strstr(parse_json_keys(user.event, WITHOUT_RESULTS), "waiting") != NULL) {
+	if(check_event("waiting", WITHOUT_RESULTS))
 	    fprintf(stdout,"Waiting...\n");
-	}
 
 	/* Got connected */
-	if(strstr(parse_json_keys(user.event, WITHOUT_RESULTS), "connected") != NULL) {
-	    fprintf(stdout,"We are connected to the chat\n");
-	}
-	
+	if(check_event("connected", WITHOUT_RESULTS))
+	    fprintf(stdout,"We are connected to chat\n");
+
 	/* Got count */
-	if(strstr(parse_json_keys(user.event, WITH_RESULTS), "count") != NULL) {
+	if(check_event("count", WITH_RESULTS)) {
 	    count = parse_json_value(user.event, "count");
 	    fprintf(stdout,"Count : %s\n", count);
 	    free(count);
 	}
 
 	/* Stranger typing */
-	if(strstr(parse_json_keys(user.event, WITHOUT_RESULTS), "typing") != NULL) {
+	if(check_event("typing", WITHOUT_RESULTS))
 	    fprintf(stdout,"Stranger typing...\n");
-	}
-	/* Stranger stopped typing */
-	if(strstr(parse_json_keys(user.event, WITHOUT_RESULTS), "stoppedTyping") != NULL) {
-	    fprintf(stdout,"Stranger stopped typing...\n");
-	}
 
+	/* Stranger stopped typing */
+	if(check_event("stoppedTyping", WITHOUT_RESULTS))
+	    fprintf(stdout,"Stranger stopped typing...\n");
+	    
 	/* Got message */
-	if(strstr(parse_json_keys(user.event, WITH_RESULTS), "gotMessage") != NULL) {
+	if(check_event("gotMessage", WITH_RESULTS)) {
 	    char *message = parse_json_value(user.event, "gotMessage");
 	    fprintf(stdout,"[>] Stranger : %s\n", message);
 	    free(message);
@@ -96,7 +95,7 @@ int main() {
 	}
 
 	/* Stranger disconnected */
-	if(strstr(parse_json_keys(user.event, WITHOUT_RESULTS), "strangerDisconnected") != NULL) {
+	if(check_event("strangerDisconnected", WITH_RESULTS)) {
 	    fprintf(stdout,"Stranger disconnected\n");
 	    fprintf(stdout,"Because events are : %s\n", user.event);
 	    /* Reconnect when stranger disconnects */
@@ -115,6 +114,15 @@ int main() {
     free(user.id);
     free(user.ip);
     return EXIT_SUCCESS;
+}
+
+/* Check if event exists in user.events */
+/* Return 1 if event is available */
+/* Return 0 if event is not available */ 
+int check_event(char *event, int with_result) {
+    if(strstr(parse_json_keys(user.event, with_result), event) != NULL)
+	return 1;
+    return 0;
 }
 
 /* Reconnect when stranger disconnects */
