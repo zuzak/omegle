@@ -400,7 +400,7 @@ int create_tcp_socket()
 }
 
 
-/* Send Post request */
+/* Set POST query */
 char *build_post(char *host, char *page, char *data)
 {
     char *query;
