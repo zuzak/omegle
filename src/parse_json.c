@@ -80,7 +80,7 @@ static char *parse_json_value(char *json, char *key)
     /* ptr to first occurance of key in json */
     key_ptr = strstr(json,key)+strlen(key)+1;
     if(key_ptr == NULL) {
-    	printf("strstr in parse_json_value error\n");
+    	fprintf(stderr,"strstr in parse_json_value error\n");
     	exit(-1);
     }
 

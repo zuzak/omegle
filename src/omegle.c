@@ -44,7 +44,7 @@ int main() {
     /* Get user stranger ID */
     user.id = get_id();
     remchar(user.id, '"');
-    printf("[+] Stranger id %s\n", user.id);
+    fprintf(stdout,"[+] Stranger id %s\n", user.id);
     fflush(stdout);
 
     /***********************************/
@@ -54,38 +54,38 @@ int main() {
     char *count   = NULL;
     while(1) {
 	user.event = get_event(user.id);
-	/* printf("[+] Event %s\n", user.event); */
+	/* fprintf(stdout,"[+] Event %s\n", user.event); */
 
 	/* Are we waiting */
 	if(strstr(parse_json_keys(user.event, WITHOUT_RESULTS), "waiting") != NULL) {
-	    printf("Waiting...\n");
+	    fprintf(stdout,"Waiting...\n");
 	}
 
 	/* Got connected */
 	if(strstr(parse_json_keys(user.event, WITHOUT_RESULTS), "connected") != NULL) {
-	    printf("We are connected to the chat\n");
+	    fprintf(stdout,"We are connected to the chat\n");
 	}
 	
 	/* Got count */
 	if(strstr(parse_json_keys(user.event, WITH_RESULTS), "count") != NULL) {
 	    count = parse_json_value(user.event, "count");
-	    printf("Count : %s\n", count);
+	    fprintf(stdout,"Count : %s\n", count);
 	    free(count);
 	}
 
 	/* Stranger typing */
 	if(strstr(parse_json_keys(user.event, WITHOUT_RESULTS), "typing") != NULL) {
-	    printf("Stranger typing...\n");
+	    fprintf(stdout,"Stranger typing...\n");
 	}
 	/* Stranger stopped typing */
 	if(strstr(parse_json_keys(user.event, WITHOUT_RESULTS), "stoppedTyping") != NULL) {
-	    printf("Stranger stopped typing...\n");
+	    fprintf(stdout,"Stranger stopped typing...\n");
 	}
 
 	/* Got message */
 	if(strstr(parse_json_keys(user.event, WITH_RESULTS), "gotMessage") != NULL) {
 	    char *message = parse_json_value(user.event, "gotMessage");
-	    printf("[>] Stranger : %s\n", message);
+	    fprintf(stdout,"[>] Stranger : %s\n", message);
 	    free(message);
 
 	    /* Sleep for three seconds to send message */
@@ -97,8 +97,8 @@ int main() {
 
 	/* Stranger disconnected */
 	if(strstr(parse_json_keys(user.event, WITHOUT_RESULTS), "strangerDisconnected") != NULL) {
-	    printf("Stranger disconnected\n");
-	    printf("Because events are : %s\n", user.event);
+	    fprintf(stdout,"Stranger disconnected\n");
+	    fprintf(stdout,"Because events are : %s\n", user.event);
 	    /* Reconnect when stranger disconnects */
 	    free(user.id);
 	    reconnect();
@@ -120,10 +120,10 @@ int main() {
 /* Reconnect when stranger disconnects */
 void reconnect()
 {
-    printf("Reconnecting()\n");
+    fprintf(stdout,"Reconnecting()\n");
     user.id = get_id();
     remchar(user.id, '"');
-    printf("[+] New Stranger id is %s\n", user.id);
+    fprintf(stdout,"[+] New Stranger id is %s\n", user.id);
     fflush(stdout);
     
 }
@@ -152,7 +152,7 @@ void say_something(char *message, char *id)
 
     /* Creating socket */
     if((sock = create_tcp_socket()) < 0) {
-	printf("error while creating socket\n");
+	fprintf(stderr,"error while creating socket\n");
 	exit(-1);
     }
 
@@ -179,7 +179,7 @@ void say_something(char *message, char *id)
 	sent += tempres;
     }
 
-    printf("[+] You : %s\n", message);
+    fprintf(stdout,"[+] You : %s\n", message);
 
     free(remote);
     free(post_request);
@@ -212,7 +212,7 @@ char *get_event(char *id)
 
     /* Creating socket */
     if((sock = create_tcp_socket()) < 0) {
-	printf("error while creating socket\n");
+	fprintf(stderr,"error while creating socket\n");
 	exit(-1);
     }
 
