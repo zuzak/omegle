@@ -24,7 +24,6 @@ char *get_event(char *);
 void say_something(char *, char *);
 void remchar(char *, char);
 void reconnect();
-
 struct sockaddr_in *create_remote();
 
 struct omegle {
@@ -143,6 +142,8 @@ void remchar(char *string, char o)
 }
 
 /* A function to send message to omegle */
+/* TODO: */
+/* message bounadires */
 void say_something(char *message, char *id)
 {
     struct sockaddr_in *remote;
