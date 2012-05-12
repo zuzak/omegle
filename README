@@ -1,3 +1,10 @@
 .Omegle CLI for linux written in C.
 (still unstable just started the project)
 
+Added :
+      gtk
+      threads
+      shm
+
+The code works and you can chat, but it's still unstable
+I'll fix the code later and add features, ..etc

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk+" version="2.24"/>
+  <!-- interface-naming-policy project-wide -->
+  <object class="GtkWindow" id="window">
+    <property name="can_focus">False</property>
+    <child>
+      <object class="GtkFixed" id="fixed">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <child>
+          <object class="GtkEntry" id="textbox">
+            <property name="width_request">490</property>
+            <property name="height_request">24</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="primary_icon_activatable">False</property>
+            <property name="secondary_icon_activatable">False</property>
+            <property name="primary_icon_sensitive">True</property>
+            <property name="secondary_icon_sensitive">True</property>
+          </object>
+          <packing>
+            <property name="x">5</property>
+            <property name="y">467</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkTextView" id="chatbox">
+            <property name="width_request">595</property>
+            <property name="height_request">451</property>
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+          </object>
+          <packing>
+            <property name="x">7</property>
+            <property name="y">8</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="nextButton">
+            <property name="label" translatable="yes">next</property>
+            <property name="use_action_appearance">False</property>
+            <property name="width_request">104</property>
+            <property name="height_request">25</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <signal name="clicked" handler="next_clicked_cb" swapped="no"/>
+          </object>
+          <packing>
+            <property name="x">499</property>
+            <property name="y">465</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
+</interface>

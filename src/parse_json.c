@@ -5,30 +5,30 @@
 static char *parse_json_keys(char *json, int want_result);
 static char *parse_json_value(char *json, char *key);
 
-/* TODO : */
-/* key boundaries */
-/* result bounadries */
+/***********************************/
+/* Parse json keys 'omegle events' */
+/* @param json, want_results	   */
+/* @return key			   */
+/***********************************/
 static char *parse_json_keys(char *json, int want_result)
 {
     int i;
-    int json_start = 0; int json_started = 0;
-    int json_end   = 0; int json_ended   = 0;
+    int json_start = 0, json_started = 0;
+    int json_end   = 0, json_ended = 0;
     int ticks = 0;
-    /* char key[5000]; */
-
     char *key = (char *)malloc(sizeof(char)*1024);
+    char *result = (char *)malloc(sizeof(char)*1024);
+    
     if(key == NULL) {
 	return NULL;
     }
-
-    char *result = (char *)malloc(sizeof(char)*1024);
     if(result == NULL) {
 	return NULL;
     }
 
     /* Start searching for the beginning and end of our keys */
     /* or string values */
-    for(i=0; i<strlen(json); i++) {
+    for(i=0; i<(int)strlen(json); i++) {
 	if(json[i] == '"' && json_started == 0) {
 	    json_start   = i;
 	    json_started = 1;
@@ -70,8 +70,11 @@ static char *parse_json_keys(char *json, int want_result)
     return result;
 }
 
-/* TODO: */
-/* result boundaries */
+/*********************/
+/* Parse json values */
+/* @param json, key  */
+/* @return value     */
+/*********************/
 static char *parse_json_value(char *json, char *key)
 {
     int  i =0;
