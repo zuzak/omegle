@@ -223,7 +223,6 @@ on_key_press (GtkWidget *widget, GdkEventKey *event, gpointer user_data)
 	w->text   = gtk_entry_get_text (GTK_ENTRY (w->textbox));
 	w->mark   = gtk_text_buffer_get_insert (w->buffer);
 	gtk_text_buffer_get_iter_at_mark (w->buffer, &w->iter, w->mark);
-	gtk_text_buffer_insert (w->buffer, &w->iter, w->gtk_user->id, -1);
 	gtk_text_buffer_insert (w->buffer, &w->iter, "You : ", -1);
 	gtk_text_buffer_insert (w->buffer, &w->iter, w->text, -1);
 	gtk_text_buffer_insert (w->buffer, &w->iter, "\n", -1);
@@ -251,7 +250,7 @@ void *gtk_event_update(void *args)
     char previous_event[1024], message[1024];
 
     for(;;) {
-	usleep(50);		/* a small delay */
+	usleep(25);		/* a small delay */
 	if(strcmp(w_cpy->gtk_user->event, previous_event)
 	   && strcmp(w_cpy->gtk_user->event, "null\r\n")
 	   && strcmp(w_cpy->gtk_user->event, "\r\n")
@@ -277,7 +276,7 @@ void *gtk_event_update(void *args)
 G_MODULE_EXPORT void
 next_clicked_cb (GtkButton *button, Widgets *w)
 {
-    chatBox_write("next.. new stranger id : ", w);
+    chatBox_write("ID : ", w);
     reconnect(w->gtk_user);
     chatBox_write(w->gtk_user->id, w);
     chatBox_write("\n", w);
@@ -332,8 +331,9 @@ void parse_events(omegle *user, Widgets *w)
 	free(message);
     }
     /* Stranger disconnected */
-    if(check_event(user, "strangerDisconnected", WITH_RESULTS)) {
+    if(check_event(user, "strangerDisconnected", WITHOUT_RESULTS)) {
 	chatBox_write("Stranger Disconnected\n", w);
+	chatBox_write("Reconnecting...\n", w);
 	reconnect(user);
     }
     return;
@@ -362,7 +362,6 @@ void reconnect(omegle *user)
     /* Get omegle.com IP */
     if((user->ip = get_ip("omegle.com")) == NULL)
     	exit(-1);
-    printf("New ip user->ip %s\n", user->ip);
     /* Get user stranger ID */
     get_id(user);
     remchar(user->id, '"');
