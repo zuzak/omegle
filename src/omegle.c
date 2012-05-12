@@ -1,9 +1,3 @@
-/***********************************************************/
-/* TODO : event handling for strangerDisconnected is wrong */
-/* we need to fix it					   */
-/* TODO : Fix shm_ea to use less mem assholes              */
-/***********************************************************/
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
